@@ -5,12 +5,14 @@ the experiment lifecycle
 import os
 import time
 
+
 import numpy as np
 import torch
 import torch.optim as optim
 import torch.nn.functional as F
 
 from torch.utils.data import DataLoader
+
 from torch.utils.tensorboard import SummaryWriter
 
 from data_prep.SlicesDataset import SlicesDataset
@@ -97,16 +99,19 @@ class UNetExperiment:
             # shape [BATCH_SIZE, 1, PATCH_SIZE, PATCH_SIZE] into variables data and target. 
             # Feed data to the model and feed target to the loss function
             # 
-            # data = <YOUR CODE HERE>
-            # target = <YOUR CODE HERE>
+            # print(batch["image"].shape)
+            # params = torch.from_numpy(conv_kernel).type(torch.FloatTensor).unsqueeze(0).unsqueeze(0)
 
-            prediction = self.model(data)
+            data = batch["image"]
+            target = batch["seg"]
+            print(target.shape)
+            
+            prediction = self.model(data.to(self.device))
 
             # We are also getting softmax'd version of prediction to output a probability map
             # so that we can see how the model converges to the solution
             prediction_softmax = F.softmax(prediction, dim=1)
-
-            loss = self.loss_function(prediction, target[:, 0, :, :])
+            loss = self.loss_function(prediction, target[:, 0, :, :].long().to(self.device))
 
             # TASK: What does each dimension of variable prediction represent?
             # ANSWER:
@@ -154,6 +159,11 @@ class UNetExperiment:
                 
                 # TASK: Write validation code that will compute loss on a validation sample
                 # <YOUR CODE HERE>
+                data = batch["image"]
+                target = batch["seg"]            
+                prediction = self.model(data.to(self.device))
+                prediction_softmax = F.softmax(prediction, dim=1)
+                loss = self.loss_function(prediction, target[:, 0, :, :].long().to(self.device))
 
                 print(f"Batch {i}. Data shape {data.shape} Loss {loss}")
 

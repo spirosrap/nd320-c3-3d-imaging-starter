@@ -3,6 +3,7 @@ This file contains code that will kick off training and testing processes
 """
 import os
 import json
+import numpy as np
 
 from experiments.UNetExperiment import UNetExperiment
 from data_prep.HippocampusDatasetLoader import LoadHippocampusData
@@ -11,14 +12,15 @@ class Config:
     """
     Holds configuration parameters
     """
+
     def __init__(self):
         self.name = "Basic_unet"
-        self.root_dir = r"YOUR DIRECTORY HERE"
-        self.n_epochs = 10
+        self.root_dir = r"../../data/TrainingSet/clean"
+        self.n_epochs = 15
         self.learning_rate = 0.0002
         self.batch_size = 8
         self.patch_size = 64
-        self.test_results_dir = "RESULTS GO HERE"
+        self.test_results_dir = "../out"
 
 if __name__ == "__main__":
     # Get configuration
@@ -48,6 +50,13 @@ if __name__ == "__main__":
     # TASK: create three keys in the dictionary: "train", "val" and "test". In each key, store
     # the array with indices of training volumes.
     # <YOUR CODE GOES HERE>
+    train, validate, test = np.split(keys,[int(len(keys)*0.6),int(len(keys)*0.8)])
+
+    split["train"] = np.array(train)
+    split["val"] = np.array(validate)
+    split["test"] = np.array(test)
+
+
 
     # Set up and run experiment
     
