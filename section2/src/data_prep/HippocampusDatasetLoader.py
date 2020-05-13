@@ -55,7 +55,8 @@ def LoadHippocampusData(root_dir, y_shape, z_shape):
         label = med_reshape(label, new_shape=(label.shape[0], y_shape, z_shape)).astype(int)
 
         # TASK: Why do we need to cast label to int?
-        # ANSWER: 
+        # ANSWER: Our loss function CrossEntropyLoss expects a long value (64bit Int) as the target (label).
+        #         Better to be prepared.
 
         out.append({"image": image, "seg": label, "filename": f})
 

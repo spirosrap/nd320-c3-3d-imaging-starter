@@ -114,7 +114,10 @@ class UNetExperiment:
             loss = self.loss_function(prediction, target[:, 0, :, :].long().to(self.device))
 
             # TASK: What does each dimension of variable prediction represent?
-            # ANSWER:
+            # ANSWER: The prediction variable outputs the estimate of the hippicambus in 3D so, 3 of the dimensions 
+            #         are correspond to the 3D slices-pictures (taken at regular intervals hence the voxels). 
+            #         the remaining dimension is the batch size. A fixed number of each one is used to train the model
+            #         because the model is trained in steps and epochs.
 
             loss.backward()
             self.optimizer.step()
