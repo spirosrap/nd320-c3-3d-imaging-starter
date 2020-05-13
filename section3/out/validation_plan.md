@@ -26,10 +26,40 @@ According to http://medicaldecathlon.com/index.html:
 
 ## How was the training performance of the algorithm measured and how is the real-world performance going to be estimated?
 
-The performance was measured using the Jaccard distance and dice distance from the labels. Τhe real-world performance will be measured when doctors use the system in a controled environment. 
+The performance was measured using the Jaccard distance from the labels. Τhe real-world performance will be measured when doctors use the system in a controled environment. 
 
 
 ## What data will the algorithm perform well in the real world and what data it might not perform well on?
 
 The data will perform well in reasonable images of human brains with a clear view of the hippocambus. If the hippocambus isn't clear the algorithm will not perform well.
 
+
+
+*I address here the requests of the reviewer:*
+
+*The validation plan states how you measured your performance on the training dataset. Did you do Jaccard or Dice on the training set?*
+
+We compute and report Dice and Jaccard similarity coefficients which assess how close our volumes are to each other.
+
+```
+  264    "overall": {
+  265      "mean_dice": 0.8943325600014282,
+  266:     "mean_jaccard": 0.8100955954740026
+  267    },
+```
+   
+*The images shown by tensorboard depict what? You have to add that here*:
+
+Loss throughout epochs on the training and test set (`tensorboard.png`)
+Image data and label data of the training set (`tensorboard3.png`,`tensorboard1.png`). Also, the probability map (`tensorboard2`)
+
+
+*Secondly, the real world performance means how are you evaluating your test set? What metrics did you use there?*
+
+Again, the performance on the test set is measured similarly using the jaccard distance. The similarity with the labels, that is.
+
+*What data will the algorithm perform well in the real world and what data it might not perform well on?*
+
+The algorithm will perform well if the data set is diverse enough. All possible age ranges in which the disease occurs and in balanced quantities.
+
+Since Alzheimer's patients tend to be older, using younger subjects might make our algorithm not to perform well. Or using subjects in a very narrow age range.
